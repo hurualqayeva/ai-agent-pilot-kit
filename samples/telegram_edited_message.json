@@ -1,0 +1,11 @@
+{
+  "update_id": 900000102,
+  "edited_message": {
+    "message_id": 41,
+    "from": {"id": 555000111, "is_bot": false, "first_name": "Olena"},
+    "chat": {"id": 555000111, "first_name": "Olena", "type": "private"},
+    "date": 1793091600,
+    "edit_date": 1793091660,
+    "text": "Hi! Looking for a 2-room apartment in Pechersk up to 1600 USD"
+  }
+}

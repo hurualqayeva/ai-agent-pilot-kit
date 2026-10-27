@@ -1,0 +1,10 @@
+{
+  "update_id": 900000101,
+  "message": {
+    "message_id": 41,
+    "from": {"id": 555000111, "is_bot": false, "first_name": "Olena", "language_code": "uk"},
+    "chat": {"id": 555000111, "first_name": "Olena", "type": "private"},
+    "date": 1793091600,
+    "text": "Hi! Looking for a 2-room apartment in Pechersk up to 1500 USD, the building must have a generator"
+  }
+}

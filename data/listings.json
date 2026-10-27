@@ -1,0 +1,122 @@
+[
+  {
+    "id": "KH-101",
+    "title": "Bright 1-room apartment near Kontraktova Square",
+    "district": "Podil",
+    "rooms": 1,
+    "area_m2": 42,
+    "price_usd": 650,
+    "pets_allowed": false,
+    "features": ["balcony", "metro 5 min", "renovated 2024", "dishwasher"],
+    "description": "Quiet courtyard side, 4th floor of 6, elevator. Good for one person or a couple.",
+    "viewing_slots": ["2026-11-03 10:00", "2026-11-03 17:30", "2026-11-05 12:00"]
+  },
+  {
+    "id": "KH-102",
+    "title": "2-room loft with river view",
+    "district": "Podil",
+    "rooms": 2,
+    "area_m2": 68,
+    "price_usd": 1100,
+    "pets_allowed": true,
+    "features": ["river view", "workspace", "underground parking", "metro 8 min"],
+    "description": "High ceilings, open kitchen, separate bedroom. Pets welcome with deposit.",
+    "viewing_slots": ["2026-11-04 11:00", "2026-11-06 18:00"]
+  },
+  {
+    "id": "KH-201",
+    "title": "Classic 2-room apartment on Lesi Ukrainky Boulevard",
+    "district": "Pechersk",
+    "rooms": 2,
+    "area_m2": 74,
+    "price_usd": 1400,
+    "pets_allowed": false,
+    "features": ["generator", "concierge", "metro 10 min", "parking"],
+    "description": "Building has a backup generator and concierge. Two separate rooms, large kitchen.",
+    "viewing_slots": ["2026-11-03 15:00", "2026-11-04 16:00"]
+  },
+  {
+    "id": "KH-202",
+    "title": "3-room family apartment near Klovska",
+    "district": "Pechersk",
+    "rooms": 3,
+    "area_m2": 96,
+    "price_usd": 1900,
+    "pets_allowed": true,
+    "features": ["school nearby", "generator", "two bathrooms", "metro 4 min"],
+    "description": "Three bedrooms, two bathrooms, storage room. Families and small pets welcome.",
+    "viewing_slots": ["2026-11-05 10:00", "2026-11-07 12:00"]
+  },
+  {
+    "id": "KH-301",
+    "title": "Studio by Obolon embankment",
+    "district": "Obolon",
+    "rooms": 1,
+    "area_m2": 31,
+    "price_usd": 420,
+    "pets_allowed": true,
+    "features": ["embankment", "metro 7 min", "new building", "washing machine"],
+    "description": "Compact studio in a new building, walk to the Dnipro embankment. Cats and small dogs OK.",
+    "viewing_slots": ["2026-11-03 19:00", "2026-11-04 19:00"]
+  },
+  {
+    "id": "KH-302",
+    "title": "2-room apartment near Minska metro",
+    "district": "Obolon",
+    "rooms": 2,
+    "area_m2": 55,
+    "price_usd": 700,
+    "pets_allowed": false,
+    "features": ["metro 3 min", "park nearby", "shopping mall"],
+    "description": "Two separate rooms, renovated bathroom. Park and mall within 5 minutes.",
+    "viewing_slots": ["2026-11-04 10:00", "2026-11-06 10:00"]
+  },
+  {
+    "id": "KH-401",
+    "title": "1-room apartment near Lukianivska",
+    "district": "Shevchenkivskyi",
+    "rooms": 1,
+    "area_m2": 45,
+    "price_usd": 750,
+    "pets_allowed": true,
+    "features": ["metro 6 min", "generator", "workspace", "balcony"],
+    "description": "Quiet street, building with generator. Good home office corner.",
+    "viewing_slots": ["2026-11-05 17:00", "2026-11-06 17:00"]
+  },
+  {
+    "id": "KH-402",
+    "title": "Penthouse with terrace near Golden Gate",
+    "district": "Shevchenkivskyi",
+    "rooms": 3,
+    "area_m2": 140,
+    "price_usd": 3200,
+    "pets_allowed": false,
+    "features": ["terrace", "parking", "concierge", "generator", "city view"],
+    "description": "Top floor, 40 m2 terrace, two parking spaces. Premium building with concierge.",
+    "viewing_slots": ["2026-11-07 11:00"]
+  },
+  {
+    "id": "KH-501",
+    "title": "2-room apartment in Osokorky new building",
+    "district": "Darnytskyi",
+    "rooms": 2,
+    "area_m2": 62,
+    "price_usd": 600,
+    "pets_allowed": true,
+    "features": ["new building", "playground", "parking", "metro 12 min"],
+    "description": "Family-friendly complex with playground and closed yard. Pets allowed.",
+    "viewing_slots": ["2026-11-03 12:00", "2026-11-05 14:00"]
+  },
+  {
+    "id": "KH-502",
+    "title": "Budget studio near Pozniaky",
+    "district": "Darnytskyi",
+    "rooms": 1,
+    "area_m2": 28,
+    "price_usd": 380,
+    "pets_allowed": false,
+    "features": ["metro 5 min", "furnished"],
+    "description": "Furnished studio, ready to move in. Utilities around 60 USD per month.",
+    "viewing_slots": ["2026-11-04 13:00", "2026-11-06 13:00"]
+  }
+]

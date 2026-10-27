@@ -1,0 +1,9 @@
+Name,Phone,Email,Budget,District,Rooms,Comment,Source
+  Olena Kovalenko ,067-123-45-67,olena.k@example.com,$1200,pechersk,2,needs generator,Telegram
+Olena Kovalenko,+380 67 123 45 67,olena.k@example.com,1200,Pechersk,2,duplicate from website form,Website
+Andrii Melnyk,0501112233,,700 usd,Obolon,1-2,has a cat,Telegram
+IRYNA SHEVCHUK,(093) 555 66 77,iryna.sh@example.com,"1,900",Pechersk,3,family with kids,Phone call
+Taras Bondar,,taras.b@example.com,500,Darnytskyi,1,,Website
+Maria Tkachenko,380631234567,maria@example.com,,Podil,2,wants river view,Telegram
+Dmytro Lysenko,12345,dmytro@example,800$,Podil,1,call after 18:00 at 0441234567,Phone call
+Sofiia Moroz,+380991234567,sofiia.m@example.com,3k,Shevchenkivskyi,3,terrace,Website

@@ -1,0 +1,10 @@
+{
+  "update_id": 900000103,
+  "message": {
+    "message_id": 42,
+    "from": {"id": 555000111, "is_bot": false, "first_name": "Olena"},
+    "chat": {"id": 555000111, "first_name": "Olena", "type": "private"},
+    "date": 1793091700,
+    "voice": {"duration": 7, "mime_type": "audio/ogg", "file_id": "AwACAgIAAxkBAAIB", "file_unique_id": "AgADvx4AAo", "file_size": 21344}
+  }
+}
