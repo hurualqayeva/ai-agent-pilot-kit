@@ -37,13 +37,39 @@ Telegram --webhook--> FastAPI --> Agent (LiteLLM tool-calling loop) --> Mock CRM
 - **Guardrails in code, not just in the prompt:** booking is refused without a phone or with a slot that does not exist; double booking returns 409 from the CRM.
 - **Evals:** 14 cases (search, facts, booking, privacy, handoff, prompt injection, Ukrainian) with pass rate, tokens and cost per case. Exits non-zero under 90%, so it can gate CI.
 
+## MCP server: evals from your coding agent
+[`mcp_server/server.py`](mcp_server/server.py) exposes the pilot to any MCP client (Claude Code, Cursor, VS Code). Change the prompt, then ask your coding agent *"run the booking evals and tell me what got worse"* without leaving the editor.
+
+| Tool | What it does |
+|---|---|
+| `run_evals(model?, cases?)` | Runs the eval suite (or a subset) and returns pass rate, cost per conversation and failures per case |
+| `list_eval_cases()` | Case ids and what each one checks |
+| `search_listings(...)` | Same search the agent uses, to check what it should have answered |
+| `list_leads()` / `list_viewings()` | Read the CRM to verify what the agent actually wrote |
+| `clean_export(csv_path)` | Clean and anonymize a client export, return the data gaps |
+
+Connect it (stdio):
+```json
+{
+  "mcpServers": {
+    "pilot-kit": {
+      "command": "/path/to/ai-agent-pilot-kit/.venv/bin/python",
+      "args": ["-m", "mcp_server.server"],
+      "cwd": "/path/to/ai-agent-pilot-kit"
+    }
+  }
+}
+```
+Library output during an eval run is redirected to stderr so it cannot corrupt the stdio channel; `clean_export` only reads CSVs inside the repo.
+
 ## Run it
 ```bash
 python -m venv .venv && .venv/Scripts/activate      # macOS/Linux: source .venv/bin/activate
 pip install -r requirements.txt
 cp .env.example .env                                  # add an LLM API key
 
-pytest                                                # 19 unit tests, no API key needed
+pytest                                                # 26 tests, no API key needed
+python -m mcp_server.server                           # MCP server over stdio
 python scripts/clean_and_anonymize.py data/raw/leads_export.csv data/clean
 python -m evals.run_evals                             # needs an API key, writes evals/report.md
 

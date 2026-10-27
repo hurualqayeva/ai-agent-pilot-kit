@@ -56,19 +56,27 @@ def check(expect: dict, reply: str, tools: list[str], handoff: bool, crm: TestCl
     return failures
 
 
-def main() -> None:
-    parser = argparse.ArgumentParser()
-    parser.add_argument("--model", default=os.getenv("MODEL", "anthropic/claude-haiku-5-5"))
-    parser.add_argument("--min-pass", type=float, default=0.9)
-    args = parser.parse_args()
-
+def run_suite(
+    model: str,
+    min_pass: float = 0.9,
+    only: list[str] | None = None,
+    complete=None,
+    verbose: bool = True,
+    report_dir: Path = HERE,
+) -> dict:
+    """Run the cases (all, or the ids in `only`), write evals/report.md and return a summary."""
     cases = json.loads((HERE / "cases.json").read_text(encoding="utf-8"))
+    if only:
+        cases = [case for case in cases if case["id"] in only]
+        if not cases:
+            raise ValueError(f"no cases match {only}")
     listings = Listings()
     rows, total_cost, total_tokens, passed = [], 0.0, 0, 0
+    agent_kwargs = {"complete": complete} if complete else {}
 
     for case in cases:
         crm = TestClient(create_app(":memory:"))
-        agent = Agent(crm=CrmClient(crm), listings=listings, model=args.model)
+        agent = Agent(crm=CrmClient(crm), listings=listings, model=model, **agent_kwargs)
         vault, history = PiiVault(), []
         tools, handoff, cost, tokens, reply = [], False, 0.0, 0, ""
         started = time.perf_counter()
@@ -89,14 +97,15 @@ def main() -> None:
         total_cost += cost
         total_tokens += tokens
         rows.append((case, failures, tokens, cost, seconds))
-        print(f"{'PASS' if not failures else 'FAIL'}  {case['id']}  {'; '.join(failures)}")
+        if verbose:
+            print(f"{'PASS' if not failures else 'FAIL'}  {case['id']}  {'; '.join(failures)}")
 
     rate = passed / len(cases)
     lines = [
         "# Eval report",
         "",
-        f"Model: `{args.model}`  ",
-        f"Pass rate: **{passed}/{len(cases)} ({rate:.0%})**, gate {args.min_pass:.0%}  ",
+        f"Model: `{model}`  ",
+        f"Pass rate: **{passed}/{len(cases)} ({rate:.0%})**, gate {min_pass:.0%}  ",
         f"Total cost: ${total_cost:.4f}, avg per conversation ${total_cost / len(cases):.5f}  ",
         f"Total tokens: {total_tokens}",
         "",
@@ -106,9 +115,30 @@ def main() -> None:
     for case, failures, tokens, cost, seconds in rows:
         result = "pass" if not failures else "FAIL: " + "; ".join(failures).replace("|", "/")
         lines.append(f"| {case['id']} | {case['why']} | {result} | {tokens} | ${cost:.5f} | {seconds:.1f}s |")
-    (HERE / "report.md").write_text("\n".join(lines) + "\n", encoding="utf-8")
-    print(f"\n{passed}/{len(cases)} passed, ${total_cost:.4f} total. Report: evals/report.md")
-    sys.exit(0 if rate >= args.min_pass else 1)
+    (report_dir / "report.md").write_text("\n".join(lines) + "\n", encoding="utf-8")
+    return {
+        "model": model,
+        "passed": passed,
+        "total": len(cases),
+        "pass_rate": round(rate, 3),
+        "gate_passed": rate >= min_pass,
+        "total_cost_usd": round(total_cost, 5),
+        "avg_cost_per_conversation_usd": round(total_cost / len(cases), 5),
+        "total_tokens": total_tokens,
+        "failures": {case["id"]: failures for case, failures, *_ in rows if failures},
+        "report": "evals/report.md",
+    }
+
+
+def main() -> None:
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--model", default=os.getenv("MODEL", "anthropic/claude-haiku-5-5"))
+    parser.add_argument("--min-pass", type=float, default=0.9)
+    args = parser.parse_args()
+
+    summary = run_suite(args.model, args.min_pass)
+    print(f"\n{summary['passed']}/{summary['total']} passed, ${summary['total_cost_usd']:.4f} total. Report: evals/report.md")
+    sys.exit(0 if summary["gate_passed"] else 1)
 
 
 if __name__ == "__main__":

@@ -112,6 +112,11 @@ def clean(rows: list[dict]) -> tuple[list[dict], list[str]]:
 
 
 def main(src: str, out_dir: str) -> None:
+    summary = clean_file(src, out_dir)
+    print(f"{summary['rows_in']} rows in, {summary['leads_out']} clean leads out, {len(summary['gaps'])} gaps. See {out_dir}")
+
+
+def clean_file(src: str, out_dir: str) -> dict:
     with open(src, newline="", encoding="utf-8") as fh:
         rows = list(csv.DictReader(fh))
     cleaned, gaps = clean(rows)
@@ -133,7 +138,7 @@ def main(src: str, out_dir: str) -> None:
         "Names, phones and emails were removed from leads_clean.csv. Raw data stays with the client.",
     ]
     (out / "gaps.md").write_text("\n".join(report) + "\n", encoding="utf-8")
-    print(f"{len(rows)} rows in, {len(cleaned)} clean leads out, {len(gaps)} gaps. See {out}")
+    return {"rows_in": len(rows), "leads_out": len(cleaned), "gaps": gaps}
 
 
 if __name__ == "__main__":
