@@ -1,0 +1,55 @@
+# Full pilot stack: webhook, queue worker, Redis and the mock CRM.
+#   cp .env.example .env   # add an LLM API key (and a bot token for real Telegram)
+#   docker compose up --build
+#   curl -X POST localhost:8000/webhook/telegram -H "Content-Type: application/json" -d @samples/telegram_text_message.json
+#   docker compose logs -f worker
+
+x-pilot: &pilot
+  build: .
+  env_file:
+    - path: .env
+      required: false
+  environment:
+    CRM_BASE_URL: http://crm:8001
+    REDIS_URL: redis://redis:6379/0
+  depends_on:
+    redis:
+      condition: service_healthy
+    crm:
+      condition: service_started
+  restart: unless-stopped
+
+services:
+  webhook:
+    <<: *pilot
+    ports:
+      - "8000:8000"
+
+  worker:
+    <<: *pilot
+    command: ["python", "-m", "app.worker"]
+
+  crm:
+    build: .
+    command: ["uvicorn", "mock_crm.app:create_app", "--factory", "--host", "0.0.0.0", "--port", "8001"]
+    environment:
+      CRM_DB_PATH: /data/crm.sqlite3
+    volumes:
+      - crm-data:/data
+    ports:
+      - "8001:8001"
+    restart: unless-stopped
+
+  redis:
+    image: redis:7-alpine
+    command: ["redis-server", "--appendonly", "yes"]
+    volumes:
+      - redis-data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      retries: 5
+
+volumes:
+  crm-data:
+  redis-data:
