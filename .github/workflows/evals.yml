@@ -1,0 +1,40 @@
+# Runs the eval suite against a real model. Manual, because it calls a paid API.
+# Needs the ANTHROPIC_API_KEY repository secret (or another provider's key + model).
+name: Evals
+
+on:
+  workflow_dispatch:
+    inputs:
+      model:
+        description: LiteLLM model string
+        default: anthropic/claude-haiku-5-5
+      min_pass:
+        description: Pass rate gate
+        default: "0.9"
+
+jobs:
+  evals:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+      - run: pip install -r requirements.txt
+      - name: Run evals
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          MODEL: ${{ inputs.model }}
+          MIN_PASS: ${{ inputs.min_pass }}
+        run: python -m evals.run_evals --model "$MODEL" --min-pass "$MIN_PASS"
+      - name: Report to job summary
+        if: always()
+        run: test -f evals/report.md && cat evals/report.md >> "$GITHUB_STEP_SUMMARY" || true
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: eval-report
+          path: evals/report.md
+          if-no-files-found: ignore
